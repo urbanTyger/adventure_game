@@ -353,9 +353,9 @@ def waiting(text):
     for ch in text:
         if(ch.isspace()):
             words += 1
-    words /= 20
+    words /= 3
     if words <= 1.5:
-        words = 0
+        words = 2
         return words
     else:
         return (words)
