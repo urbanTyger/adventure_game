@@ -212,6 +212,7 @@ def fight(enemy, place):
                 text("\nThanks for playing. Would you like to play again?", "story")
                 yes_no("begin_quest", "exit")
             show_stats("+"+enemy, place,hero_health, enemy_battle)
+    time.sleep(1)
 
 
 def injury_sounds(character):
@@ -352,9 +353,9 @@ def waiting(text):
     for ch in text:
         if(ch.isspace()):
             words += 1
-    words /= 20
+    words /= 3
     if words <= 1.5:
-        words = 1
+        words = 2
         return words
     else:
         return (words)
