@@ -9,10 +9,10 @@ areas = ["House", "Lake", "Temple", "Cave", "Castle", "Fountain", "Cabin"]
 Old_man_places = ["Cabin", "Castle", "Temple"]
 zeus = random.choice(Old_man_places)
 godly_items = ["Sheild of Athens", "Sword of Manil","Bag of Hell-Coins", "Peach", "Laughing Duck", "Glasses of Vision"]
-standard_items = ["Copper sheild", "Sword of Useless Hope",
+standard_items = ["Copper sheild", "Sword of Hope",
                   "Diamond Knife", "Helmet of Paris", "Battle stick", "Spear of the Mouse", "Pearl of the Sacred Clam", "Sacred Clam"]
 items_desc = ["protects you immensly from attacks, limiting attack damage.", "cuts like a blade forged from the Sun, dealing major damage!",
-              "helps you cross 'over' and bargain should you perish", "tempts and poisons the beast when it is off guard, should you hit its' mouth",
+              "helps you cross 'over' and bargain for another life should you perish", "tempts and poisons the beast when it is off guard, should you hit its' mouth",
               "makes the monster laugh hard enough to eternally sleep (Super powered attack)", "helps you to see how much strength and items a monster has during a battle", "gives you some additional protection against damage.",
               "slashes more 'hopefull?'...", "gives sharp slashes", "protects your head better, obviously", "helps you fight better than your fists alone ", "....um, I actually have no idea..lol",
               "helps you sense the monsters' strength", "helps you sense if the monster has eaten anything useful"]
@@ -70,7 +70,7 @@ def check_location(place):
             text(f"You run away from the {monster[0].upper()} as you are not ready and afraid...", "story")
             choose_path()
     else:
-        if dice_roll(10) > 4:
+        if dice_roll(10) >= 3:
             enemy = random.choice(minions)
             text(f"You found a {enemy} to fight!", "action")
             fight(enemy, place)
@@ -96,7 +96,7 @@ def battle_damages(enemy):
         text("Your first attack will use the Godly given 'Laughing Duck'", "story")
         update_inventory("-Laughing Duck")
         time.sleep(3)
-    elif "Sword of Useless Hope" in inventory:
+    elif "Sword of Hope" in inventory:
         damages[1] = dice_roll(25)
     elif "Diamond Knife" in inventory:
         damages[1] = 17
@@ -131,13 +131,14 @@ def battle_damages(enemy):
 def fight(enemy, place):
     # customizing battles with enemies
     if enemy in minions:
-        text(f"You must fight the {enemy} at the {place}...\n", "action")
+        text(f"You prepare to fight the {enemy} at the {place}...\n", "action")
+        text(" - Automated battle -", "story")
         enemy_battle[0] = dice_roll(40)
         enemy_battle[1] = enemy_battle[0]
         enemy_inv.clear()
         found = random.choice(standard_items)
-        drop_item = dice_roll(20)
-        if drop_item >= 9:
+        drop_item = dice_roll(22)
+        if drop_item >= 5:
             if found not in inventory:
                 enemy_inv.append(found)
         drop_health = dice_roll(50)
@@ -178,7 +179,6 @@ def fight(enemy, place):
                             text("\033[mYou have gained some health.", "action")
                             print(end="\n")
                             hero_health[0] += dice_roll(hero_health[1]-hero_health[0])
-                            
                     show_stats("basic")
                 else:
                     time.sleep(5)
@@ -212,7 +212,7 @@ def fight(enemy, place):
                 text("\nThanks for playing. Would you like to play again?", "story")
                 yes_no("begin_quest", "exit")
             show_stats("+"+enemy, place,hero_health, enemy_battle)
-    time.sleep(1)
+        time.sleep(1)
 
 
 def injury_sounds(character):
@@ -250,8 +250,9 @@ def healthbar(hero_enemy_array):
     else:
         while i < hero_enemy_array[0]/2:
             bargraph += "|"
-            i += 1
+            i += 1    
     return(f"[ {stat_color(hero_enemy_array)}{bargraph} {reset}]")
+    
     
 
 
@@ -337,7 +338,7 @@ def text(lines, type):
     elif type == "story":
         print(f"\033[m{lines}")
     elif type == "?":
-        print(f"\033[30;45m{lines}")
+        print(f"\033[m{lines}")
     elif type == "stat":
         print(
             f"    \033[m\033[36m{lines}\033[m\033[36mof {hero_health[1]} ]")
@@ -397,14 +398,14 @@ def intro():
     text(f"Can the humans defeat this threat on their own, or should you help?", "story")
     text("If you leave Olympus, all your godly powers will be removed, and you will become mortal.", "story")
     text("You can also never return. For once you have helped the humans, Zeus will have you exiled.", "story")
-    text("Do you leave Olympus to save humanity? ('yes' or 'no')", "?")
-    print(end="\033[m --> ")
+    print("Do you leave Olympus to save humanity? ('yes' or 'no')")
+    print(end=" --> ")
     choice = input()
     if "yes" in choice.lower() or "y" in choice.lower():
         text("You decide to be the hero whose story will be told for generations.", "story")
         text("You walk past the gates of Olympus, and wave to Hercules, who says...", "story")
         print(end="\n")
-        text("Without your abilities, you may be unable to sense the stregth of your enemy.", "speech")
+        text("Without your abilities, you may be unable to sense the strength of your enemy.", "speech")
         text(f"Be sure to check all places multiple times until you find some useful artifacts and weapons.", "speech")
         effects("uhhuh")
         text(f"If you find the old man, he should be able to give you information on your current inventory.", "speech")
@@ -431,6 +432,7 @@ def wiseman(place):
     text("Now, ask me a question of one item in your inventory and I will tell you its' benefit.", "speech")
     effects("drinking")
     text("\nWith a smirk, the old man waits after taking a sip of beer...", "story")
+    print("Please choose an item from the below list by number:")
     if len(inventory) > 0:
         for item in range(len(inventory)):
             print(f"{item+1}. {inventory[item]}")
@@ -501,8 +503,8 @@ def going_to(place):
 
 def choose_path():
     music_background(music, currently_playing)
-    text("Finding nothing else, you walk to the central path.", "action")
-    print(f"\033[30;45m\nWhere would you like to go? (Choose from 1 to {len(areas)})\033[m")
+    text("Finding nothing more, you walk to the central path.", "action")
+    print(f"\033[m\nWhere would you like to go? (Choose from 1 to {len(areas)})\033[m")
     for path in range(len(areas)):
         print(f"{path+1}. {areas[path]}")
     choice = input(" --> ")
@@ -515,7 +517,7 @@ def choose_path():
     if choice > 0 and choice <= len(areas):
         going_to(areas[choice-1])
     else:
-        text(f"Sorry that does not exist. Choose from 1 to {len(areas)}.", "story")
+        text(f"Sorry please try again. Choose from 1 to {len(areas)}.", "story")
         choose_path()
 
 def music_background(title, currently_playing):
@@ -592,8 +594,8 @@ def Cabin(place):
         areas_been.append(place)
         if dice_roll(10) >= 3 and zeus == place:
             wiseman(place)
-        else:
-            text(f"You search the {place} to no avail.", "story")
+        # else:
+        #     text(f"You search the {place} to no avail.", "story")
     check_location(place)
     choose_path()
 
@@ -607,7 +609,7 @@ def Temple(place):
         if dice_roll(10) >= 3 and zeus == place:
             wiseman(place)
         else:
-            text(f"You search the {place} but find nothing this time.", "story")
+            text(f"You search the {place}.", "story")
     check_location(place)
     choose_path()
 
