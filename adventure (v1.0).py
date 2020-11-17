@@ -350,16 +350,13 @@ def text(lines, type):
 
 def waiting(text):
     # based on sentance length, waiting time is calculated with a minumum of 2 seconds
-    words = 0
-    for ch in text:
-        if(ch.isspace()):
-            words += 1
-    words /= 3
+    words = text.count(" ")
+    words /= 4
     if words <= 1.5:
         words = 2
         return words
     else:
-        return (words)
+        return words
 
 
 def update_inventory(item):
