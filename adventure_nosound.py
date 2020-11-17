@@ -8,30 +8,57 @@ areas = ["House", "Lake", "Temple", "Cave", "Castle", "Fountain", "Cabin"]
 Old_man_places = ["Cabin", "Castle", "Temple"]
 zeus = random.choice(Old_man_places)
 godly_items = ["Sheild of Athens", "Sword of Manil",
-               "Bag of Hell-Coins", "Peach", "Laughing Duck", "Glasses of Vision"]
+               "Bag of Hell-Coins", "Peach",
+               "Laughing Duck", "Glasses of Vision"]
 standard_items = ["Copper sheild", "Sword of Useless Hope",
-                  "Diamond Knife", "Helmet of Paris", "Battle stick", "Spear of the Mouse", "Pearl of the Sacred Clam", "Sacred Clam"]
-items_desc = ["protects you immensly from attacks, limiting attack damage.", "cuts like a blade forged from the Sun, dealing major damage!",
-              "helps you cross 'over' and bargain should you perish", "tempts and poisons the beast when it is off guard, should you hit its' mouth",
-              "makes the monster laugh hard enough to eternally sleep (Super powered attack)", "helps you to see how much strength and items a monster has during a battle", "gives you some additional protection against damage.",
-              "slashes more 'hopefull?'...", "gives sharp slashes", "protects your head better, obviously", "helps you fight better than your fists alone ", "....um, I actually have no idea..lol",
-              "helps you sense the monsters' strength", "helps you sense if the monster has eaten anything useful"]
-task = ["eating a burger", "drinking a cocktail", "baking a cake",
-        "singing horribly", "petting a cat", "swimming", "painting", "sculpting"]
-monsters = ["gorgon", "medusa", "Burning Hell-Eagle", "Dragon", "Possessed King",
-            "Talking Cobra", "midnight fairy", "pink Elf", "rabid kanye west"]
-m_final_attack = ["hisses you to death in the form of a song, a top-1000 chart hitter of the time.", "easily turns you to stone.", "screams burning hell-fire, toasting all of the worlds' dreams.", "eats you in a slow and painful chew.",
-                  "makes the evil spirit possess you, destroying your will to live.", "talks you to death and then bites you with poison for good measure.",
-                  "casts a hex on you, making you suffocate", "explodes taking out the world. Goodbye humanity.", "raps until you join his entourage, thereby destroying the world."]
-minions = ["water elf", "troll", "golum", "bear", "fox", "minotaur",
-           "phoenix", "rat", "bat", "gorilla", "cerebus", "pikachun",
-           "rattlesnake", "evil unicorn", "demon", "vulture", "lion", "land shark",
-           "dwarf", "giant"]
+                  "Diamond Knife", "Helmet of Paris", "Battle stick",
+                  "Spear of the Mouse", "Pearl of the Sacred Clam",
+                  "Sacred Clam"]
+items_desc = ["protects you immensly from attacks, limiting attack damage.",
+              "cuts like a blade forged from the Sun, dealing major damage!",
+              "helps you cross 'over' and bargain should you perish",
+              "tempts and poisons the beast when it is off guard, should you hit its' mouth",
+              "makes the monster laugh hard enough to eternally sleep (Super powered attack)",
+              "helps you to see how much strength and items a monster has during a battle",
+              "gives you some additional protection against damage.",
+              "slashes more 'hopefull?'...",
+              "gives sharp slashes",
+              "protects your head better, obviously",
+              "helps you fight better than your fists alone ",
+              "....um, I actually have no idea..lol",
+              "helps you sense the monsters' strength",
+              "helps you sense if the monster has eaten anything useful"]
+task = ["eating a burger", "drinking a cocktail",
+        "baking a cake", "singing horribly",
+        "petting a cat", "swimming",
+        "painting", "sculpting"]
+monsters = ["gorgon", "medusa", "Burning Hell-Eagle",
+            "Dragon", "Possessed King",
+            "Talking Cobra", "midnight fairy",
+            "pink Elf", "rabid kanye west"]
+m_final_attack = ["hisses you to death in the form of a song, a top-1000 chart hitter of the time.",
+                  "easily turns you to stone.",
+                  "screams burning hell-fire, toasting all of the worlds' dreams.",
+                  "eats you in a slow and painful chew.",
+                  "makes the evil spirit possess you, destroying your will to live.",
+                  "talks you to death and then bites you with poison for good measure.",
+                  "casts a hex on you, making you suffocate",
+                  "explodes taking out the world. Goodbye humanity.",
+                  "raps until you join his entourage, thereby destroying the world."]
+minions = ["water elf", "troll", "golum",
+           "bear", "fox", "minotaur",
+           "phoenix", "rat", "bat",
+           "gorilla", "cerebus", "pikachun",
+           "rattlesnake", "evil unicorn",
+           "demon", "vulture", "lion",
+           "land shark", "dwarf",
+           "giant"]
 # empty lists
 areas_been = []
 monster = []
 inventory = []
 enemy_inv = []
+
 enemy_battle = [0, 0, 0]
 hero_health = [50, 100, 0]
 
@@ -129,8 +156,8 @@ def fight(enemy, place):
         enemy_battle[1] = enemy_battle[0]
         enemy_inv.clear()
         found = random.choice(standard_items)
-        drop_item = dice_roll(20)
-        if drop_item >= 9:
+        drop_item = dice_roll(22)
+        if drop_item >= 7:
             if found not in inventory:
                 enemy_inv.append(found)
         drop_health = dice_roll(50)
@@ -140,8 +167,7 @@ def fight(enemy, place):
     else:
         enemy_inv.clear()
         enemy_inv.append("Souls of the fallen")
-        text(
-            f"\nYou decide to fight the {enemy} at the {place}...\n", "action")
+        text(f"\nYou decide to fight the {enemy} at the {place}...\n", "action")
         enemy_battle[0] = monster[2]
         enemy_battle[1] = enemy_battle[0]
         time.sleep(2)
@@ -159,13 +185,11 @@ def fight(enemy, place):
                 text(f"You have defeated the {enemy}.", "action")
                 if enemy in minions:
                     if len(enemy_inv) > 0 and enemy_inv[0] in standard_items:
-                        text(
-                            f"The defeated {enemy} has dropped something...", "story")
+                        text(f"The defeated {enemy} has dropped something...", "story")
                         update_inventory("+" + found)
                     if drop_health >= 20:
                         if hero_health[0] < .99 * hero_health[1]:
-                            text(
-                                "\033[mYou have gained some health.", "action")
+                            text("\033[mYou have gained some health.", "action")
                             print(end="\n")
                             hero_health[0] += dice_roll(
                                 hero_health[1]-hero_health[0])
@@ -237,64 +261,49 @@ def healthbar(hero_enemy_array):
 
 
 def show_stats(name, place="path", hero=hero_health, enemy=enemy_battle):
-    # will modify in next version
+    # will modify in next version as it is too long and too repetitive
     header = "\033[m\033[36m[\033[36;1m "
     reset = "\033[m\033[36m"
     hero_color = stat_color(hero_health)
     enemy_color = stat_color(enemy)
     if name.lower() == "basic":
-        print(
-            f"{header}Hero Health{reset}: {hero_color}{str(hero[0]).zfill(3)} {reset}of {hero[1]}  |  \033[m\033[36;1mInventory{reset}: \033[32;1m {line_inventory(inventory)} {reset}]\n")
+        print(f"{header}Hero Health{reset}: {hero_color}{str(hero[0]).zfill(3)} {reset}of {hero[1]}  |  \033[m\033[36;1mInventory{reset}: \033[32;1m {line_inventory(inventory)} {reset}]\n")
     elif name[0] == "+":
         clearScreen()
-        print(
-            f"{reset} BATTLE versus a {name[1:].capitalize()} at the {place}\n")
-        print(
-            f"{header}Hero Health{reset}: {hero_color}{str(hero[0]).zfill(3)} {reset}of {hero[1]}  |  \033[m\033[36;1mInventory{reset}: \033[32;1m {line_inventory(inventory)} {reset}]")
-        print(
-            f"{healthbar(hero)} \033[33mThe {name[1:].capitalize()} hit you{reset} | \033[31;1m-{enemy[2]}\033[m")
+        print(f"{reset} BATTLE versus a {name[1:].capitalize()} at the {place}\n")
+        print(f"{header}Hero Health{reset}: {hero_color}{str(hero[0]).zfill(3)} {reset}of {hero[1]}  |  \033[m\033[36;1mInventory{reset}: \033[32;1m {line_inventory(inventory)} {reset}]")
+        print(f"{healthbar(hero)} \033[33mThe {name[1:].capitalize()} hit you{reset} | \033[31;1m-{enemy[2]}\033[m")
         print("\n")
         if "Glasses of Vision" in inventory or "Sacred Clam" in inventory and "Pearl of the Sacred Clam" in inventory:
             print(f"{header}{name[1:].capitalize()} Health{reset}: {enemy_color}{str(enemy[0]).zfill(3)} {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m {line_inventory(enemy_inv)} {reset}]")
             print(f"{healthbar(enemy)} \033[33m\n")
         elif "Sacred Clam" in inventory:
-            print(
-                f"{header}{name[1:].capitalize()} Health{reset}: ??? {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m {line_inventory(enemy_inv)} {reset}]")
+            print(f"{header}{name[1:].capitalize()} Health{reset}: ??? {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m {line_inventory(enemy_inv)} {reset}]")
             print(f"[ ? Unable to Sense ? {reset}] \033[33m\n")
         elif "Pearl of the Sacred Clam" in inventory:
             print(f"{header}{name[1:].capitalize()} Health{reset}: {enemy_color}{str(enemy[0]).zfill(3)} {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m ? Unable to Sense ? {reset}]")
             print(f"{healthbar(enemy)} \033[33m\n")
         else:
-            print(
-                f"{header}{name[1:].capitalize()} Health{reset}: ??? {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m ? Unable to Sense ? {reset}]")
+            print(f"{header}{name[1:].capitalize()} Health{reset}: ??? {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m ? Unable to Sense ? {reset}]")
             print(f"[ ? Unable to Sense ? {reset}] \033[33m\n")
     else:
         clearScreen()
         print(f"{reset} BATTLE versus a {name.capitalize()} at the {place}\n")
-        print(
-            f"{header}Hero Health{reset}: {hero_color}{str(hero[0]).zfill(3)} {reset}of {hero[1]}  |  \033[m\033[36;1mInventory{reset}: \033[32;1m {line_inventory(inventory)} {reset}]")
+        print(f"{header}Hero Health{reset}: {hero_color}{str(hero[0]).zfill(3)} {reset}of {hero[1]}  |  \033[m\033[36;1mInventory{reset}: \033[32;1m {line_inventory(inventory)} {reset}]")
         print(f"{healthbar(hero)} \033[33m")
         print("\n")
         if "Glasses of Vision" in inventory or "Sacred Clam" in inventory and "Pearl of the Sacred Clam" in inventory:
-            print(
-                f"{header}{name.capitalize()} Health{reset}: {enemy_color}{str(enemy[0]).zfill(3)} {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m {line_inventory(enemy_inv)} {reset}]")
-            print(
-                f"{healthbar(enemy)} \033[33mYou hit the {name}{reset} | \033[31;1m-{hero[2]}\033[m\n")
+            print(f"{header}{name.capitalize()} Health{reset}: {enemy_color}{str(enemy[0]).zfill(3)} {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m {line_inventory(enemy_inv)} {reset}]")
+            print(f"{healthbar(enemy)} \033[33mYou hit the {name}{reset} | \033[31;1m-{hero[2]}\033[m\n")
         elif "Sacred Clam" in inventory:
-            print(
-                f"{header}{name.capitalize()} Health{reset}: ??? {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m {line_inventory(enemy_inv)} {reset}]")
-            print(
-                f"[ ? Unable to Sense ? {reset}] \033[33mYou hit the {name}{reset} | \033[31;1m-{hero[2]}\033[m\n")
+            print(f"{header}{name.capitalize()} Health{reset}: ??? {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m {line_inventory(enemy_inv)} {reset}]")
+            print(f"[ ? Unable to Sense ? {reset}] \033[33mYou hit the {name}{reset} | \033[31;1m-{hero[2]}\033[m\n")
         elif "Pearl of the Sacred Clam" in inventory:
-            print(
-                f"{header}{name.capitalize()} Health{reset}: {enemy_color}{str(enemy[0]).zfill(3)} {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m ? Unable to Sense ? {reset}]")
-            print(
-                f"{healthbar(enemy)} \033[33mYou hit the {name}{reset} | \033[31;1m-{hero[2]}\033[m\n")
+            print(f"{header}{name.capitalize()} Health{reset}: {enemy_color}{str(enemy[0]).zfill(3)} {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m ? Unable to Sense ? {reset}]")
+            print(f"{healthbar(enemy)} \033[33mYou hit the {name}{reset} | \033[31;1m-{hero[2]}\033[m\n")
         else:
-            print(
-                f"{header}{name.capitalize()} Health{reset}: ??? {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m ? Unable to Sense ? {reset}]")
-            print(
-                f"[ ? Unable to Sense ? {reset}] \033[33mYou hit the {name}{reset} | \033[31;1m-{hero[2]}\033[m\n")
+            print(f"{header}{name.capitalize()} Health{reset}: ??? {reset}  |  \033[m\033[36;1mDroppable{reset}: \033[32;1m ? Unable to Sense ? {reset}]")
+            print(f"[ ? Unable to Sense ? {reset}] \033[33mYou hit the {name}{reset} | \033[31;1m-{hero[2]}\033[m\n")
     time.sleep(1)
 
 
@@ -423,8 +432,7 @@ def wiseman(place):
                 while inventory[choice-1] != godly_items[index]:
                     index += 1
                 print(end="\n")
-                text(
-                    f"The {inventory[choice-1].upper()} {items_desc[index]}", "speech")
+                text(f"The {inventory[choice-1].upper()} {items_desc[index]}", "speech")
             else:
                 index = 0
                 while inventory[choice-1] != standard_items[index]:
